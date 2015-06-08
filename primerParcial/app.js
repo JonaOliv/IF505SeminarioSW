@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 
 //var routes = require('./routes/index');
 //var users = require('./routes/users');
+//hasta aqui lo comentado
 
 var app = express();
 
@@ -27,7 +28,7 @@ app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-/* Aqui peudo trabajar */
+/* Aqui puedo trabajar */
 
 
 
@@ -36,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use('/', routes);
 //app.use('/users', users);
-
+//hasta aqui lo comentado
 
 //app --> servidor web
 /*
@@ -74,6 +75,8 @@ app.get("/", function(req, res){
     res.send("Hola Mundo!");
 } );
 
+
+
 // Al ejecutar http://hostname_or_ip:3000/minombre
 // esta función es la ruta que coincide.
 app.get("/minombre", function(req,res){
@@ -86,11 +89,29 @@ app.get("/minombre", function(req,res){
     res.render("miNombre", {"miNombre":"Orlando J."});
 });
 
+app.get("/roles",function(req,res){
+  var roles = {"rol1":"Banquero","rol2":"Tecnico","rol3":"Electricista"};
+  res.render("roles",roles);
+});
+
 // Ejercicio cree las siguiente rutas de acceso.
 //============================================================
 // miapellido
 // nombreCompleto
 // identidad
+
+
+app.get("/mostrarperfil", function(req, res){
+    //res.send("Hola Mundo!");
+    res.render("perfil", {
+      "nombre":"Jonathan",
+      "apellido":"Oliva",
+      "nombreCompleto":"Jonathan Benjamin Oliva Salinas",
+      "email":"rutenio4416@hotmail.com",
+      "profesion":"Ingeniero en Sistemas",
+      "genero":"Masculino",
+      "direccion":"Dept. Francisco Morazan, Tegucigalpa, Colonia Cerro Grande zona 4"});
+} );
 
 
 /* +++++++++++++++++++++*/
