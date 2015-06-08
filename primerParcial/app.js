@@ -100,6 +100,90 @@ app.get("/roles",function(req,res){
 // nombreCompleto
 // identidad
 
+//tarea resuelta
+app.get("/mostrarperfil",function(req,res){
+    // var perfil = {
+    //     "primerNombre":"Orlando",
+    //     "segundoNombre":"José",
+    //     "apellidos":"Betancourth",
+    //     "email":"obetancourthunicah@gmail.com",
+    //     "genero":"Masculino",
+    //     "direccion":"Tegucigalps",
+    //     "profesion":"Ing.Ciencias de la Computación"
+    // };
+
+    //res.render("datospersonales",perfil);
+    res.render("datospersonales", {
+        "primerNombre":"Orlando",
+        "segundoNombre":"José",
+        "apellidos":"Betancourth",
+        "email":"obetancourthunicah@gmail.com",
+        "genero":"Masculino",
+        "direccion":"Tegucigalps",
+        "profesion":"Ing.Ciencias de la Computación",
+        "roles":[
+                    {"rol":"Administrador"},
+                    {"rol":"Security Audit"}
+                ]
+    });
+});
+
+//Ejercicio 2
+/*Por medio de un handler (manejador) get
+eviaremos al cliente un formulario
+y por handler post vamos a recibir
+y procesar los datos del formulario.
+*/
+
+app.get(
+    "/editarperfil",
+    function(req,res){
+        var datos={
+            "primerNombre" :"",
+            "segundoNombre":""
+        };
+        res.render("editarperfil", datos);
+    }
+);
+app.post(
+    "/editarperfil",
+    function(req,res){
+        var datos={
+            "primerNombre" :req.body.txtPrimerNombre,
+            "segundoNombre":req.body.txtSegundoNombre,
+            "mensaje": req.body.txtPrimerNombre + ' '
+                     + req.body.txtSegundoNombre
+        };
+        res.render("editarperfil", datos);
+    }
+);
+
+var datos  = {"productos":[
+    {"codigo":"PRD01","nombre":"Panadol","precio":50,"stock":100},
+    {"codigo":"PRD02","nombre":"Aciclovir","precio":70,"stock":20},
+    {"codigo":"PRD03","nombre":"Augmentin ES","precio":390,"stock":10}
+]};
+
+app.get("/mostrarproductos", function(req,res){
+
+    //console.log(datos);
+    //res.send(datos);
+    res.render("mostrarproductos",datos);
+});
+
+///producto?codigo=PRD01
+app.get("/producto", function(req,res){
+    var codigoProducto = req.query.codigo;
+    res.send("Se obtuvo el codigo " + codigoProducto + " del producto");
+});
+
+///productos/PRD01
+app.get("/productos/:codigo", function(req,res){
+    var codigoProducto = req.params.codigo;
+    res.send("Se obtuvo el codigo " + codigoProducto + " con REST");
+});
+
+
 
 app.get("/mostrarperfil", function(req, res){
     //res.send("Hola Mundo!");
