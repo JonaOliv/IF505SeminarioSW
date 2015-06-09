@@ -1,0 +1,26 @@
+<form action="/validar" method="post">
+
+    <label for="txtCorreo">
+        Nombre</label>
+    <input type="text"
+        name="txtCorreo"
+        id="txtCorreo"
+        value="{{correo}}"
+        placeholder="Correo" /></br>
+
+    <label for="txtPassword">
+        Codigo</label>
+    <input type="password"
+        name="txtPassword"
+        id="txtPassword"
+        value="{{password}}"
+        placeholder="Contraseña" /></br>
+
+    <input type="submit" value="Iniciar Sesion"
+        id="btnGuardar" name="btnGuardar" />
+</form>
+<div>
+  {{#each errores}}
+    {{error}}</br>
+  {{/each}}
+</div>

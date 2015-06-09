@@ -73,9 +73,7 @@ nombre   || firma                    ||  Explicación
 // esta función es la ruta que coincide.
 app.get("/", function(req, res){
     res.send("Hola Mundo!");
-} );
-
-
+});
 
 // Al ejecutar http://hostname_or_ip:3000/minombre
 // esta función es la ruta que coincide.
@@ -134,6 +132,22 @@ eviaremos al cliente un formulario
 y por handler post vamos a recibir
 y procesar los datos del formulario.
 */
+/*
+para poder trabajar lo que hemos hecho hay que tener
+nodejs
+express generator
+ssh*/
+
+/*como se ejecuta un programa desarrollado con express?
+node ./bin/www
+*/
+
+/*Uqe tipo de plantillero estamos usando con express generator?
+handlebars*/
+/*cual es el puerto por defecto que usan las aplicaciones generadas con generator?3000 y la que usa el ssh es 22*/
+
+/*Con que metodo el servidor escuha una ruta get?
+*/
 
 app.get(
     "/editarperfil",
@@ -168,16 +182,26 @@ app.get("/mostrarproductos", function(req,res){
 
     //console.log(datos);
     //res.send(datos);
+
     res.render("mostrarproductos",datos);
 });
 
 ///producto?codigo=PRD01
 app.get("/producto", function(req,res){
     var codigoProducto = req.query.codigo;
-    res.send("Se obtuvo el codigo " + codigoProducto + " del producto");
+    //res.send("Se obtuvo el codigo " + codigoProducto + " del producto");
+    //console.log(datos["productos"]);
+    //res.send(datos["productos"][0]["codigo"]);
+    //res.send(datos["productos"][0]["codigo"]);
+
+    for (var i = 0; i < datos["productos"].length; i++) {
+      if (datos["productos"][i]["codigo"]==codigoProducto) {
+        res.render("producto",datos["productos"][i]);
+      }
+    }
 });
 
-///productos/PRD01
+///productos/PRD01 metodo REST
 app.get("/productos/:codigo", function(req,res){
     var codigoProducto = req.params.codigo;
     res.send("Se obtuvo el codigo " + codigoProducto + " con REST");
@@ -197,6 +221,40 @@ app.get("/mostrarperfil", function(req, res){
       "direccion":"Dept. Francisco Morazan, Tegucigalpa, Colonia Cerro Grande zona 4"});
 } );
 
+function esEmail(valor){
+    re=/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,3})$/
+    if(!re.exec(valor))    {
+        return false;
+    }else{
+        return true;
+    }
+}
+
+app.get("/login",function(req,res) {
+  var mensaje={"errores":""};
+   res.render("login",mensaje);
+});
+
+app.post("/validar",function(req,res) {
+  var loginData={
+      "correo" :req.body.txtCorreo,
+      "password":req.body.txtPassword,
+      "errores": new Array()
+  };
+  var vista="validar";
+
+  if (!esEmail(loginData["correo"])) {
+    loginData["errores"].push({"error":"Escribio mal el formato del correo"});
+    vista="login";
+  }
+
+  if (loginData["password"]!="lucario") {
+    loginData["errores"].push({"error":"Escribio mal la contraseña"});
+    vista="login";
+  }
+
+  res.render(vista,loginData);
+});
 
 /* +++++++++++++++++++++*/
 // catch 404 and forward to error handler
