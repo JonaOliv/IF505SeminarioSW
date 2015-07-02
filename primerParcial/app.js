@@ -220,7 +220,7 @@ app.get("/mostrarperfil", function(req, res){
       "genero":"Masculino",
       "direccion":"Dept. Francisco Morazan, Tegucigalpa, Colonia Cerro Grande zona 4"});
 } );
-
+/*
 function esEmail(valor){
     re=/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,3})$/
     if(!re.exec(valor))    {
@@ -228,7 +228,9 @@ function esEmail(valor){
     }else{
         return true;
     }
-}
+}*/
+
+
 
 app.get("/login",function(req,res) {
   var mensaje={"errores":""};
@@ -256,6 +258,95 @@ app.post("/validar",function(req,res) {
   res.render(vista,loginData);
 });
 
+function esEmail(valor){
+    re=/^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,3})$/
+    if(!re.exec(valor))    {
+        return false;
+    }else{
+        return true;
+    }
+}
+
+app.get("/ingresarPaciente",function(req,res){
+  var datosPaciente={"nomPaciente":"",
+                      "apePaciente":"",
+                      "correoPaciente":"",
+                      "telPaciente":"",
+                      "errores":""
+                      };
+
+  res.render("ingresarPaciente", datosPaciente);
+});
+
+app.post("/ingresar_pre_clinica",function(req,res){
+  var vista="ingresar_pre_clinica";
+  var datosPaciente={"nomPaciente":req.body.txtNomPaciente,
+                      "apePaciente":req.body.txtApePaciente,
+                      "correoPaciente":req.body.txtEmailPaciente,
+                      "telPaciente":req.body.txtTelPaciente,
+                      "errores":new Array()
+                      };
+
+  if (datosPaciente["nomPaciente"]=="") {
+    datosPaciente["errores"].push({"error":"El nombre del paciente lo dejo vacio"});
+    vista="ingresarPaciente";
+  }
+
+  if (datosPaciente["apePaciente"]=="") {
+    datosPaciente["errores"].push({"error":"El apellido del paciente lo dejo vacio"});
+    vista="ingresarPaciente";
+  }
+
+  if (datosPaciente["correoPaciente"]=="") {
+    datosPaciente["errores"].push({"error":"El correo del paciente lo dejo vacio"});
+    vista="ingresarPaciente";
+  }else if (!esEmail(datosPaciente["correoPaciente"])) {
+    datosPaciente["errores"].push({"error":"El correo del paciente no posee formato valido"});
+    vista="ingresarPaciente";
+  }
+
+  if (datosPaciente["telPaciente"]=="") {
+    datosPaciente["errores"].push({"error":"El teléfono del paciente lo dejo vacio"});
+    vista="ingresarPaciente";
+  }
+
+  res.render(vista, datosPaciente);
+});
+
+//programacion de negocios
+var multer      =    require('multer');
+var done        =    false;
+
+app.use(multer({ dest: './uploads/',
+ rename: function (fieldname, filename) {
+   console.log('Rename esta dando');
+    return filename;
+  },
+onFileUploadStart: function (file) {
+  console.log(file.originalname + ' is starting ...')
+},
+onFileUploadComplete: function (file) {
+  console.log(file.fieldname + ' uploaded to  ' + file.path)
+  done=true;
+}
+}));
+
+app.get('/testDocumentos1',function(req,res){
+      //var testData = {};
+      res.render("testDocumentos1", null);
+});
+
+app.post('/testDocumentos1',function(req,res){
+  var propiedades = req.files.archivo;
+  if(done==true){
+    console.log(req.files);
+    res.send(propiedades);
+    res.end("File uploaded.");
+  }
+  //res.render("propiedades", propiedades);
+});
+
+//p==========================================
 /* +++++++++++++++++++++*/
 // catch 404 and forward to error handler
 

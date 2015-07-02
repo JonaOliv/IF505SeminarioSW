@@ -1,0 +1,40 @@
+<form action="ingresar_pre_clinica" method="post">
+  <label for="txtNomPaciente">
+      Nombre del Paciente</label>
+  <input type="text"
+      name="txtNomPaciente"
+      id="txtNomPaciente"
+      placeholder="Nombre del Paciente"
+      value="{{nomPaciente}}" /></br>
+
+  <label for="txtApePaciente">
+      Apellido del Paciente</label>
+  <input type="text"
+      name="txtApePaciente"
+      id="txtApePaciente"
+      placeholder="Apellido del Paciente"
+      value="{{apePaciente}}" /></br>
+
+  <label for="txtEmailPaciente">
+      Correo del Paciente</label>
+  <input type="text"
+      name="txtEmailPaciente"
+      id="txtEmailPaciente"
+      placeholder="Correo del Paciente"
+      value="{{correoPaciente}}" /></br>
+
+  <label for="txtTelPaciente">
+      Teléfono del Paciente</label>
+  <input type="number"
+      name="txtTelPaciente"
+      id="txtTelPaciente"
+      placeholder="Teléfono del Paciente"
+      value="{{telPaciente}}" /></br>
+  <input type="submit" value="Ingresar"
+          id="btnIngresar" name="btnIngresar" />
+</form>
+<div>
+  {{#each errores}}
+    {{error}}</br>
+  {{/each}}
+</div>
